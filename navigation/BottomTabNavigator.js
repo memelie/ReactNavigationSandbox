@@ -4,7 +4,7 @@ import * as React from 'react';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
-import SandboxScreen from '../screens/SandboxScreen';
+import SandboxStackScreen from '../screens/SandboxScreen';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -34,8 +34,8 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-          name="Sandbox"
-          component={SandboxScreen}
+          name="SandboxStack"
+          component={SandboxStackScreen}
           options={{
             title: 'Sandbox',
             tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-fitness" />,
@@ -45,8 +45,13 @@ export default function BottomTabNavigator({ navigation, route }) {
   );
 }
 
-function getHeaderTitle(route) {
-  const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
+export function getHeaderTitle(route) {
+  const routeName = route.state
+      ? // Get the currently active route name in the tab navigator
+        route.state.routes[route.state.index].name
+      : // If state doesn't exist, we need to default to `screen` param if available, or the initial screen
+        // In our case, it's "Feed" as that's the first screen inside the navigator
+        route.params?.screen || INITIAL_ROUTE_NAME;
 
   switch (routeName) {
     case 'Home':
@@ -55,5 +60,7 @@ function getHeaderTitle(route) {
       return 'Links to learn more';
     case 'Sandbox':
       return 'Playground, enjoy!';
+    case 'Test':
+      return 'Test screen';
   }
 }

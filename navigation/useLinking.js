@@ -11,7 +11,10 @@ export default function(containerRef) {
           Home: 'home',
           Links: 'links',
           Settings: 'settings',
-          Sandbox: 'sandbox',
+          SandboxStack: {
+            Sandbox: 'sandbox',
+            Test: 'test',
+          },
         },
       },
     },
